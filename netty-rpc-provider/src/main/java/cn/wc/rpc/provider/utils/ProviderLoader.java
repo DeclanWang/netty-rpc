@@ -2,6 +2,7 @@ package cn.wc.rpc.provider.utils;
 
 import cn.wc.rpc.common.utils.ServiceHolder;
 import cn.wc.rpc.common.utils.ServiceLoader;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,6 +19,7 @@ import java.io.InputStream;
  * @author WangCong
  * @since 2019-06-19
  */
+@Slf4j
 public class ProviderLoader implements ServiceLoader {
 
     @Override
@@ -43,7 +45,7 @@ public class ProviderLoader implements ServiceLoader {
                 try {
                     beanClass = Class.forName(className);
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    log.info("load provider error, the detail is:", e);
                     return;
                 }
 

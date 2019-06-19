@@ -2,15 +2,16 @@ package cn.wc.rpc.provider;
 
 import cn.wc.rpc.common.bean.RpcRequest;
 import cn.wc.rpc.common.bean.RpcResponse;
-import com.alibaba.fastjson.util.IOUtils;
 import cn.wc.rpc.common.constants.RpcConstant;
+import cn.wc.rpc.common.utils.JsonSerializer;
+import cn.wc.rpc.common.utils.ServiceHolder;
+import com.alibaba.fastjson.util.IOUtils;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import cn.wc.rpc.common.utils.JsonSerializer;
-import cn.wc.rpc.common.utils.ServiceHolder;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import java.util.Objects;
  * @date 2019-06-18
  * @since 1.0
  */
+@Slf4j
 @ChannelHandler.Sharable
 public class RpcServerHandler extends SimpleChannelInboundHandler<String> {
 
@@ -71,7 +73,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<String> {
                         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error("received message from client error, the detail is:", e);
                 }
             } else {
                 response.setCode(0);

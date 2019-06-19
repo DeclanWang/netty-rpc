@@ -12,6 +12,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -32,6 +33,7 @@ import java.lang.reflect.Proxy;
  * @date 2019-06-19
  * @since 1.0
  */
+@Slf4j
 public class ReferenceLoader implements ServiceLoader {
 
     private final static String HOST = "127.0.0.1";
@@ -61,7 +63,7 @@ public class ReferenceLoader implements ServiceLoader {
                 try {
                     interfaceClass = Class.forName(interfaceName);
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    log.error("load reference error, the detail is:", e);
                     return;
                 }
 
@@ -85,11 +87,11 @@ public class ReferenceLoader implements ServiceLoader {
                         ch.writeAndFlush(new String(bytes, IOUtils.UTF8)).sync();
 
                         Object result = null;
-                        ChannelId id = ch.id();
+                        ChannelId channelId = ch.id();
                         // 自旋获取结果
                         for (int i = 0; i < LOOP; i++) {
-                            if (ResultKeeper.has(id)) {
-                                result = ResultKeeper.get(id);
+                            if (ResultKeeper.has(channelId)) {
+                                result = ResultKeeper.get(channelId);
                             }
                         }
 
