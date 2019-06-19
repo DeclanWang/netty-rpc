@@ -1,0 +1,3 @@
+<services>
+    <reference id="testService" interface="cn.wc.rpc.common.service.TestService"/>
+</services>

@@ -1,2 +1,5 @@
 rootProject.name = 'netty-rpc'
+include 'netty-rpc-provider'
+include 'netty-rpc-consumer'
+include 'netty-rpc-common'
 
